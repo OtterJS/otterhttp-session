@@ -21,7 +21,8 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
-    "lint": "eslint src --ext ts --ignore-path .gitignore",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
     "prepack": "pnpm build",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage --silent",
@@ -38,11 +39,9 @@
   },
   "homepage": "https://github.com/OtterJS/otterhttp-session#readme",
   "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
     "@types/cookie": "^0.4.1",
     "@types/node": "^22.5.0",
-    "@typescript-eslint/eslint-plugin": "^4.31.1",
-    "@typescript-eslint/parser": "^4.31.1",
-    "eslint": "^7.32.0",
     "light-my-request": "^5.13.0",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
