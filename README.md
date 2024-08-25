@@ -4,7 +4,7 @@
 [![GitHub Workflow Status][gh-actions-img]][github-actions]
 [![Coverage][cov-img]][cov-url]
 
-Lightweight _promise-based_ session middleware for [otterhttp](https://github.com/OtterJS/otterhttp#readme)
+Lightweight _promise-based_ session utility for [otterhttp](https://github.com/OtterJS/otterhttp#readme)
 
 ## Installation
 
