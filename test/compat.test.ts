@@ -1,5 +1,7 @@
-import { EventEmitter } from "stream";
-import { callbackify } from "util";
+import { EventEmitter } from "node:stream";
+import { callbackify } from "node:util";
+import { describe, expect, it, test } from "vitest";
+
 import { expressSession, promisifyStore } from "../src/compat";
 import MemoryStore from "../src/memory-store";
 

@@ -1,3 +1,5 @@
+import { describe, expect, test } from "vitest";
+
 import MemoryStore from "../src/memory-store";
 
 describe("MemoryStore", () => {
