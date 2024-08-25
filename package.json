@@ -16,7 +16,7 @@
   },
   "types": "lib/session.d.ts",
   "files": [
-    "lib/"
+    "dist"
   ],
   "sideEffects": false,
   "scripts": {
