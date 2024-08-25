@@ -1,13 +1,11 @@
 {
   "type": "module",
-  "name": "next-session",
-  "version": "4.0.4",
-  "description": "Simple promise-based session for Next.js",
+  "name": "otterhttp-session",
+  "description": "Simple promise-based session utility for otterhttp",
   "keywords": [
-    "nextjs",
+    "otterhttp",
     "session",
-    "promise",
-    "express-session"
+    "promise"
   ],
   "main": "./lib/session.cjs",
   "exports": {
@@ -37,14 +35,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hoangvvo/next-session.git"
+    "url": "git+https://github.com/OtterJS/otterhttp-session.git"
   },
-  "author": "Hoang Vo (https://hoangvvo.com)",
-  "license": "MIT",
+  "author": "lordfirespeed <hello@lordfirespeed.dev>",
+  "license": "LGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/hoangvvo/next-session/issues"
+    "url": "https://github.com/OtterJS/otterhttp-session/issues"
   },
-  "homepage": "https://github.com/hoangvvo/next-session#readme",
+  "homepage": "https://github.com/OtterJS/otterhttp-session#readme",
   "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.5",
