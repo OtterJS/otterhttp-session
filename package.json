@@ -7,15 +7,11 @@
     "session",
     "promise"
   ],
-  "main": "./lib/session.cjs",
+  "main": "./lib/index.js",
   "exports": {
     ".": {
-      "import": "./lib/session.js",
-      "require": "./lib/session.cjs"
-    },
-    "./lib/compat": {
-      "import": "./lib/compat.js",
-      "require": "./lib/compat.cjs"
+      "types": "./dist/index.d.ts",
+      "import": "./lib/index.js"
     }
   },
   "types": "lib/session.d.ts",
@@ -26,10 +22,11 @@
   "scripts": {
     "build": "tsup",
     "lint": "eslint src --ext ts --ignore-path .gitignore",
+    "prepack": "pnpm build",
     "test:import": "cd test/import-test && rm -rf node_modules && yarn && node index.js && node index.cjs && cd ../../",
     "test:unit": "jest --coverageReporters=text-lcov > coverage.lcov",
     "test": "yarn test:unit && yarn test:import",
-    "prepack": "pnpm build"
+    "type-check": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
