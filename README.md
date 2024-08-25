@@ -1,164 +1,77 @@
-# next-session
+# @otterhttp/session
 
-[![npm](https://badgen.net/npm/v/next-session)](https://www.npmjs.com/package/next-session)
-[![minified size](https://badgen.net/bundlephobia/min/next-session)](https://bundlephobia.com/result?p=next-session)
-[![CircleCI](https://circleci.com/gh/hoangvvo/next-session.svg?style=svg)](https://circleci.com/gh/hoangvvo/next-session)
-[![codecov](https://codecov.io/gh/hoangvvo/next-session/branch/master/graph/badge.svg)](https://codecov.io/gh/hoangvvo/next-session)
-[![PRs Welcome](https://badgen.net/badge/PRs/welcome/ff5252)](CONTRIBUTING.md)
+[![npm][npm-img]][npm-url]
+[![GitHub Workflow Status][gh-actions-img]][github-actions]
+[![Coverage][cov-img]][cov-url]
 
-Lightweight _promise-based_ session middleware for [Next.js](https://github.com/zeit/next.js). Also works in [micro](https://github.com/zeit/micro) or [Node.js HTTP Server](https://nodejs.org/api/http.html), [Express](https://github.com/expressjs/express), and more.
-
-> Also check out alternatives like [next-iron-session](https://github.com/vvo/next-iron-session). Take a look at [nextjs-mongodb-app](https://github.com/hoangvvo/nextjs-mongodb-app) to see this module in use.
+Lightweight _promise-based_ session middleware for [otterhttp](https://github.com/OtterJS/otterhttp#readme)
 
 ## Installation
 
 ```sh
-// NPM
-npm install next-session
-// Yarn
-yarn add next-session
+// npm
+npm install @otterhttp/session
+
+// yarn
+yarn add @otterhttp/session
+
+// pnpm
+pnpm i @otterhttp/session
 ```
 
 ## Usage
 
-:point_right: **Upgrading from v1.x to v2.x?** Please read the release notes [here](https://github.com/hoangvvo/next-session/releases/tag/v2.0.0)!
-
-:point_right: **Upgrading from v2.x to v3.x?** Please read the release notes [here](https://github.com/hoangvvo/next-session/releases/tag/v3.0.0)!
-
-:point_right: **Upgrading from v3.x to v4.x?** Please read the release notes [here](https://github.com/hoangvvo/next-session/releases/tag/v4.0.0)!
-
-**Warning** The default session store (if `options?.store` is `undefined`), `MemoryStore`, **DOES NOT** work in production or serverless environment. You must use a [Session Store](#session-store).
+**Warning** The default session store (if `options?.store` is `undefined`), `MemoryStore`,
+**DOES NOT** work in production. You must use a [Session Store](#session-store).
 
 ```js
 // ./lib/get-session.js
-import nextSession from "next-session";
-export const getSession = nextSession(options);
+import session from "@otterhttp/session"
+export const getSession = session(options)
 ```
 
-### API Routes
+### [otterhttp](https://github.com/otterjs/otterhttp#readme)
 
 ```js
-import { getSession } from "./lib/get-session.js";
+import { App } from "@otterhttp/app"
 
-export default function handler(req, res) {
-  const session = await getSession(req, res);
-  session.views = session.views ? session.views + 1 : 1;
-  // Also available under req.session:
-  // req.session.views = req.session.views ? req.session.views + 1 : 1;
-  res.send(
-    `In this session, you have visited this website ${session.views} time(s).`
-  );
-}
+import { getSession } from "./lib/get-session.js"
+
+const app = new App()
+app.get("/", async (req, res) => {
+  const session = await getSession(req, res)
+  session.views = session.views ? session.views + 1 : 1
+  res.end(`In this session, you have visited this page ${session.views} time(s).`)
+})
+app.listen(8080)
 ```
 
-Usage in API Routes may result in `API resolved without sending a response`. This can be solved by either adding:
+### [`node:http`](https://nodejs.org/api/http.html)
 
 ```js
-import nextSession from "next-session";
-const getSession = nextSession();
+import * as http from "node:http"
 
-export default function handler(req, res) {
-  const session = await getSession(req, res);
-  /* ... */
-}
-
-export const config = {
-  api: {
-    externalResolver: true,
-  },
-};
-```
-
-...or setting `options.autoCommit` to `false` and do `await session.commit()`.
-
-```js
-import nextSession from "next-session";
-const getSession = nextSession({ autoCommit: false });
-
-export default function handler(req, res) {
-  const session = await getSession(req, res);
-  /* ... */
-  await session.commit();
-}
-```
-
-### getServerSideProps
-
-```js
-import { getSession } from "./lib/get-session.js";
-
-export default function Page({ views }) {
-  return (
-    <div>In this session, you have visited this website {views} time(s).</div>
-  );
-}
-
-export async function getServerSideProps({ req, res }) {
-  const session = await getSession(req, res);
-  session.views = session.views ? session.views + 1 : 1;
-  // Also available under req.session:
-  // req.session.views = req.session.views ? req.session.views + 1 : 1;
-  return {
-    props: {
-      views: session.views,
-    },
-  };
-}
-```
-
-### Others
-
-[express](https://github.com/expressjs/express), [next-connect](https://github.com/hoangvvo/next-connect)
-
-```js
-const express = require("express");
-const app = express();
-app.use(async (req, res, next) => {
-  await getSession(req, res); // session is set to req.session
-  next();
-});
-app.get("/", (req, res) => {
-  req.session.views = req.session.views ? req.session.views + 1 : 1;
-  res.send(
-    `In this session, you have visited this website ${req.session.views} time(s).`
-  );
-});
-```
-
-[micro](https://github.com/vercel/micro), [Vercel Serverless Functions](https://vercel.com/docs/functions/introduction)
-
-```js
-module.exports = (req, res) => {
-  const session = await getSession(req, res);
-  res.end(
-    `In this session, you have visited this website ${session.views} time(s).`
-  );
-};
-```
-
-[Node.js HTTP Server](https://nodejs.org/api/http.html)
-
-```js
-const http = require("http");
+import { getSession } from "./lib/get-session.js"
 
 const server = http.createServer(async (req, res) => {
-  const session = await getSession(req, res);
-  res.end(`In this session, you have visited this website ${session.views} time(s).`;
-});
+  const session = await getSession(req, res)
+  session.views = session.views ? session.views + 1 : 1
+  res.end(`In this session, you have visited this website ${session.views} time(s).`)
+})
 server.listen(8080);
 ```
 
 ## Options
 
-`next-session` accepts the properties below.
+`@otterhttp/session` accepts the properties below.
 
 | options         | description                                                                                                                                  | default                                  |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------|
 | name            | The name of the cookie to be read from the request and set to the response.                                                                  | `sid`                                    |
 | store           | The session store instance to be used. **Required** to work in production!                                                                   | `MemoryStore`                            |
 | genid           | The function that generates a string for a new session ID.                                                                                   | [`nanoid`](https://github.com/ai/nanoid) |
-| encode          | Transforms session ID before setting cookie. It takes the raw session ID and returns the decoded/decrypted session ID.                       | undefined                                |
-| decode          | Transforms session ID back while getting from cookie. It should return the encoded/encrypted session ID                                      | undefined                                |
+| encode          | Transforms session ID before setting cookie. It takes the raw session ID and returns the decoded/decrypted session ID.                       | `encodeURIComponent`                     |
+| decode          | Transforms session ID back while getting from cookie. It should return the encoded/encrypted session ID                                      | `decodeURIComponent`                     |
 | touchAfter      | Only touch after an amount of time **(in seconds)** since last access. Disabled by default or if set to `-1`. See [touchAfter](#touchAfter). | `-1` (Disabled)                          |
 | autoCommit      | Automatically commit session. Disable this if you want to manually `session.commit()`                                                        | `true`                                   |
 | cookie.secure   | Specifies the boolean value for the **Secure** `Set-Cookie` attribute.                                                                       | `false`                                  |
@@ -178,7 +91,7 @@ In `autoCommit` mode (which is enabled by default), for optimization, a session 
 
 You may supply a custom pair of function that _encode/decode_ or _encrypt/decrypt_ the cookie on every request.
 
-```javascript
+```js
 // `express-session` signing strategy
 const signature = require("cookie-signature");
 const secret = "keyboard cat";
@@ -194,7 +107,7 @@ session({
 
 This allows you to **set** or **get** a specific value that associates to the current session.
 
-```javascript
+```js
 //  Set a value
 if (loggedIn) session.user = "John Doe";
 //  Get a value
@@ -203,7 +116,8 @@ const currentUser = session.user; // "John Doe"
 
 ### session.touch()
 
-Manually extends the session expiry by maxAge. **Note:** You must still call session.commit() if `autoCommit = false`.
+Manually extends the session expiry by `maxAge`.
+**Note:** You must still call session.commit() if `autoCommit` is `false`.
 
 ```js
 session.touch();
@@ -213,22 +127,32 @@ If `touchAfter` is set with a non-negative value, this will be automatically cal
 
 ### session.destroy()
 
-Destroy to current session and remove it from session store.
+Destroy the current session and remove it from session store.
 
-```javascript
-if (loggedOut) await session.destroy();
+```js
+async function logOut() {
+  await session.destroy();
+}
 ```
 
 ### session.commit()
 
-Save the session and set neccessary headers. Return Promise. It must be called before _sending the headers (`res.writeHead`) or response (`res.send`, `res.end`, etc.)_.
+Save the session and set necessary headers.
+Returns `Promise<void>`.
+It must be called **before** sending the response headers (`res.writeHead`, `res.send`, `res.end`, etc.).
 
 You **must** call this if `autoCommit` is set to `false`.
 
-```javascript
+```js
+if (res.headersSent) throw new Error("committing the session won't work!")
 session.hello = "world";
 await session.commit();
-// always calling res.end or res.writeHead after the above
+
+// ...
+
+// ensure response headers are sent at some point,
+// or `session.commit()` will have no effect
+res.writeHead()
 ```
 
 ### session.id
@@ -241,65 +165,37 @@ The session store to use for session middleware (see `options` above).
 
 ### Implementation
 
-A compatible session store must include three functions: `set(sid, session)`, `get(sid)`, and `destroy(sid)`. The function `touch(sid, session)` is recommended. All functions must return **Promises**.
+A compatible session store must implement
+- `set(sessionId, sessionRecord)`,
+- `get(sessionId)`
+- `destroy(sessionId)`.
 
-Refer to [MemoryStore](https://github.com/hoangvvo/next-session/blob/master/src/memory-store.ts).
+Implementation of `touch(sessionId, sessionRecord)` is optional but recommended.
 
-_TypeScript:_ the `SessionStore` type can be used to aid implementation:
+All functions must return `Promise`.
+
+Refer to [MemoryStore](https://github.com/OtterJS/otterhttp-session/blob/main/src/memory-store.ts).
+
+_TypeScript:_ the `SessionStore` type can be used to aid/validate implementation:
 
 ```ts
-import type { SessionStore } from "next-session";
+import type { SessionStore } from "@otterhttp/session";
 
 class CustomStore implements SessionStore {}
 ```
 
-### Compatibility with Express/Connect stores
+### Using `abstract-level` stores
 
-#### Promisify functions
-
-To use [Express/Connect stores](https://github.com/expressjs/session#compatible-session-stores), you must promisify `get`, `set`, `destroy`, and (if exists) `touch` methods, possibly using [`util.promisify`](https://nodejs.org/dist/latest/docs/api/util.html#util_util_promisify_original).
-
-We include the util [`promisifyStore`](./src/compat.ts#L29) in `next-session/lib/compat` to do just that:
-
-```js
-import nextSession from "next-session";
-import { promisifyStore } from "next-session/lib/compat";
-import SomeConnectStore from "connect-xyz";
-
-const connectStore = new SomeConnectStore();
-
-const getSession = nextSession({
-  store: promisifyStore(connectStore),
-});
-```
-
-You can use `expressSession` from `next-session/lib/compat` if the connect store has the following pattern.
-
-```javascript
-const session = require("express-session");
-const RedisStore = require("connect-redis")(session);
-
-// Use `expressSession` from `next-session/lib/compat` as the replacement
-
-import nextSession from "next-session";
-import { expressSession, promisifyStore } from "next-session/lib/compat";
-import RedisStoreFactory from "connect-redis";
-import Redis from "ioredis";
-
-const RedisStore = RedisStoreFactory(expressSession);
-export const getSession = nextSession({
-  store: promisifyStore(
-    new RedisStore({
-      client: new Redis(),
-    })
-  ),
-});
-```
-
-## Contributing
-
-Please see my [contributing.md](CONTRIBUTING.md).
+> [!WARNING]
+> Docs aren't here yet, but they're on their way!
 
 ## License
 
-[MIT](LICENSE)
+[LGPL-3.0-or-later](LICENSE)
+
+[npm-url]: https://npmjs.com/package/@otterhttp/session
+[npm-img]: https://img.shields.io/npm/dt/@otterhttp/session?style=for-the-badge&color=blueviolet
+[github-actions]: https://github.com/OtterJS/otterhttp-session/actions
+[gh-actions-img]: https://img.shields.io/github/actions/workflow/status/OtterJS/otterhttp-session/ci.yml?branch=main&style=for-the-badge&color=blueviolet&label=&logo=github
+[cov-url]: https://coveralls.io/github/OtterJS/otterhttp-session
+[cov-img]: https://img.shields.io/coveralls/github/OtterJS/otterhttp-session?style=for-the-badge&color=blueviolet
