@@ -1,8 +1,8 @@
 import { request } from "node:http"
+import { App, type Request as OtterRequest, type Response as OtterResponse } from "@otterhttp/app"
 import { describe, expect, test, vi } from "vitest"
-import { App, Request as OtterRequest, Response as OtterResponse } from "@otterhttp/app"
 
-import { makeFetch } from "./make-fetch";
+import { makeFetch } from "./make-fetch"
 
 import MemoryStore from "@/memory-store"
 import session from "@/session"
@@ -37,7 +37,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/')
+    const response = await fetch("/")
     expect(response.status).toBe(200)
   })
   test("return if req.session is defined", async () => {
@@ -55,7 +55,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/', { headers: { cookie: "sid=foo" } })
+    const response = await fetch("/", { headers: { cookie: "sid=foo" } })
     expect(response.status).toBe(200)
     expect(store.get).not.toHaveBeenCalled()
   })
@@ -75,7 +75,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/', { headers: { cookie: "sid=foo" } })
+    const response = await fetch("/", { headers: { cookie: "sid=foo" } })
     expect(response.status).toBe(200)
     expect(response.headers.getSetCookie()).toEqual([])
   })
@@ -97,7 +97,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/')
+    const response = await fetch("/")
 
     expect(response.status).toBe(200)
     expect(id).toBeDefined()
@@ -107,7 +107,7 @@ describe("session()", () => {
       cookie: defaultCookie,
       [isNew]: true,
     })
-    await fetch('/', { headers: { cookie: `sid=${id}` } })
+    await fetch("/", { headers: { cookie: `sid=${id}` } })
     expect(store.get).toHaveBeenCalledWith(id)
   })
   test("set session expiry if maxAge is set", async () => {
@@ -131,7 +131,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/')
+    const response = await fetch("/")
 
     expect(response.status).toBe(200)
     expect(id).toBeDefined()
@@ -142,7 +142,7 @@ describe("session()", () => {
       cookie: { ...defaultCookie, expires, maxAge: 10 },
       [isNew]: true,
     })
-    await fetch('/', { headers: { cookie: `sid=${id}` } })
+    await fetch("/", { headers: { cookie: `sid=${id}` } })
     expect(store.get).toHaveBeenCalledWith(id)
   })
   test("should destroy session and unset cookie", async () => {
@@ -162,11 +162,13 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/', { headers: { cookie: `sid=${sid}` } })
+    const response = await fetch("/", { headers: { cookie: `sid=${sid}` } })
     expect(store.destroy).toHaveBeenCalledWith(sid)
     expect(store.set).not.toHaveBeenCalled()
     expect(store.touch).not.toHaveBeenCalled()
-    expect(response.headers.getSetCookie()).toContain(`sid=${sid}; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly`)
+    expect(response.headers.getSetCookie()).toContain(
+      `sid=${sid}; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly`,
+    )
   })
   test("not touch (touchAfter = -1) by default", async () => {
     const store = new MemoryStore()
@@ -184,7 +186,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/', { headers: { cookie: `sid=foo` } })
+    const response = await fetch("/", { headers: { cookie: "sid=foo" } })
     expect(store.touch).not.toHaveBeenCalled()
     await expect(response.text().then(Number)).resolves.toEqual(expires.getTime())
   })
@@ -206,7 +208,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/', { headers: { cookie: `sid=foo` } })
+    const response = await fetch("/", { headers: { cookie: "sid=foo" } })
     expect(newExpires).toBeDefined()
     expect(newExpires?.getTime()).toBeGreaterThan(expires.getTime())
     expect(response.headers.getSetCookie()).toContain(`sid=foo; Path=/; Expires=${newExpires?.toUTCString()}; HttpOnly`)
@@ -233,7 +235,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/', { headers: { cookie: `sid=foo` } })
+    const response = await fetch("/", { headers: { cookie: "sid=foo" } })
     expect(newExpires).toBeDefined()
     expect(newExpires?.getTime()).toEqual(expires.getTime())
     expect(response.headers.getSetCookie()).toEqual([])
@@ -292,12 +294,12 @@ describe("session()", () => {
     const sessionFn = session({ store, encode, decode })
     let sid: string | undefined
     const app = new App<Request, Response>()
-    app.use('/', async (req: Request, res: Response, next) => {
+    app.use("/", async (req: Request, res: Response, next) => {
       await sessionFn(req, res)
       next()
     })
 
-    app.get('/first', async (req, res) => {
+    app.get("/first", async (req, res) => {
       if (req.session == null) return res.end()
       req.session.foo = "bar"
       sid = req.session.id
@@ -305,7 +307,7 @@ describe("session()", () => {
       res.end()
     })
 
-    app.get('/second', async (req, res) => {
+    app.get("/second", async (req, res) => {
       if (req.session == null) return res.end()
       res.end(req.session.foo)
     })
@@ -313,15 +315,15 @@ describe("session()", () => {
     const server = app.listen()
     const fetch = makeFetch(server)
 
-    const res1 = await fetch('/first')
+    const res1 = await fetch("/first")
     expect(sid).toBeDefined()
     expect(res1.headers.getSetCookie()).toContain(`sid=${encode(sid as string)}; Path=/; HttpOnly`)
     expect(store.store.has(sid as string)).toBe(true)
 
-    const res2 = await fetch('/second', { headers: { cookie: `sid=${encode(sid as string)}` } })
+    const res2 = await fetch("/second", { headers: { cookie: `sid=${encode(sid as string)}` } })
     await expect(res2.text()).resolves.toEqual("bar")
 
-    const res3 = await fetch('/second', { headers: { cookie: `sid=${sid}` } })
+    const res3 = await fetch("/second", { headers: { cookie: `sid=${sid}` } })
     await expect(res3.text()).resolves.toEqual("")
   })
   test("set cookie correctly after res.writeHead", async () => {
@@ -335,7 +337,7 @@ describe("session()", () => {
     })
     const server = app.listen()
     const fetch = makeFetch(server)
-    const response = await fetch('/')
+    const response = await fetch("/")
     expect(response.status).toBe(200)
     expect(response.headers.getSetCookie()).toMatchObject([expect.any(String)])
   })
