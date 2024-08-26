@@ -1,9 +1,6 @@
-import assert from "assert"
-import session from "next-session"
-import { expressSession, promisifyStore } from "next-session/lib/compat"
+import assert from "node:assert"
+import session from "@otterhttp/session"
 
 assert(session)
-assert(expressSession)
-assert(promisifyStore)
 
 session()

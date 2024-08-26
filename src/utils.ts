@@ -1,12 +1,9 @@
-import type { ServerResponse } from "http"
-import c from "cookie"
-import type { Options, Session, SessionData } from "./types"
+import type { ServerResponse } from "node:http"
+import * as c from "@otterhttp/cookie"
 
-export function hash(sess: SessionData) {
-  return JSON.stringify(sess, (key, val) => (key === "cookie" ? undefined : val))
-}
+import type { Options, Session } from "./types"
 
-export function commitHeader(
+export function appendSessionCookieHeader(
   res: ServerResponse,
   name: string,
   { cookie, id }: Pick<Session, "cookie" | "id">,
@@ -21,16 +18,5 @@ export function commitHeader(
     sameSite: cookie.sameSite,
     secure: cookie.secure,
   })
-
-  const prevSetCookie = res.getHeader("set-cookie")
-
-  if (prevSetCookie) {
-    if (Array.isArray(prevSetCookie)) {
-      res.setHeader("set-cookie", [...prevSetCookie, cookieStr])
-    } else {
-      res.setHeader("set-cookie", [prevSetCookie as string, cookieStr])
-    }
-  } else {
-    res.setHeader("set-cookie", cookieStr)
-  }
+  res.appendHeader("set-cookie", cookieStr)
 }

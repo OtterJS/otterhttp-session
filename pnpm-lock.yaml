@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      cookie:
-        specifier: ^0.4.1
-        version: 0.4.2
+      '@otterhttp/cookie':
+        specifier: ^3.0.0
+        version: 3.0.0
       nanoid:
         specifier: ^3.1.25
         version: 3.3.7
@@ -18,6 +18,9 @@ importers:
       '@biomejs/biome':
         specifier: ^1.8.3
         version: 1.8.3
+      '@otterhttp/app':
+        specifier: ^3.4.1
+        version: 3.4.1
       '@types/cookie':
         specifier: ^0.4.1
         version: 0.4.1
@@ -412,6 +415,78 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
+  '@otterhttp/accepts@3.0.0':
+    resolution: {integrity: sha512-8G9vqGrmEarsIPI0jyPyuPRxnRQMvQpbAUuoXPZNIz569ypy0qGBs3YPTxtQiRy4Q2KDTNMa8PRLMQhkz4I8Gw==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/app@3.4.1':
+    resolution: {integrity: sha512-6WTVow/Bu1bcYup8zlHwZg2cY2UwTk1AvsFiXgWq9RNsVXoGTQe8BMX9I0cfi1S4/MwKmmURP7Mstg90izta7w==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/content-disposition@3.1.0':
+    resolution: {integrity: sha512-2fK3d2eIdMttd9/wdWf1F14N/rgYBFPabTuL31pbJzDhmYJYzqgod7RJw1eqwEEBZTmcfAh+OuacyCadGE/Bqg==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/content-type@0.5.0':
+    resolution: {integrity: sha512-2qFRWOwTQ2ylO0LURyqvOKua0DDxZBl1hD5pZl/GLnoPfUlbX9edUcgbNrWyqTiQ44i63Wi8UhqiXMoJqbBuGA==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/cookie@3.0.0':
+    resolution: {integrity: sha512-D1/bN2s985/5wSZ0Bn3F3I7HZW3vNCIg/Pthrk7dIiwg3Y1flPrlwQOK84aNk4C2w19QGgqccuDHSIPJtoNsHg==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/encode-url@3.0.0':
+    resolution: {integrity: sha512-cXz8E2IawDYIUNBqsEN+kQNn/ErBZMQ4uJhVQQSrcPFKoCiuE9gqTlAGnQ3hJTjGjQE/02hR3Cq0KptaXzjW5Q==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/errors@0.2.1':
+    resolution: {integrity: sha512-kMouZeP8w/1WnvPa5W28wn0uYT0mFSyOuEOo1iq+mTHMP1vigalKUMXq1TsuofEE6NL672IyStWO//UEqJIlCw==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/etag@3.0.0':
+    resolution: {integrity: sha512-Kz2Hgvqy2PgbxXbx67YbRbuqK0xguGbuiWBBO/gsdmuzu05laYqRYEQANihoE/khgbPErOoUcimLy66QAEI4dA==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/forwarded@3.0.0':
+    resolution: {integrity: sha512-wzYuiXu8rk0cQfIbjaheIoIHvGrM/6DjnZth0lNvtm94QbHb74k2F/zqYbR0N0pMa7QOGm6P9f4dsVD8qR5SRQ==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/parameters@0.1.0':
+    resolution: {integrity: sha512-yhqvMwsEZNA5iSssRzcjxi+sDUWg1TUyvxe6P5EeMgHFprsLoqh1TJgQO6Vji0wciHgkZduNzKSrlPdjyV7qyA==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/proxy-address@3.0.0':
+    resolution: {integrity: sha512-FVD/OTmlyQbD9MfPjgTcdLpglEmJknIXSc8KBGtdgmnfx+nAahy9tZt7JFWQKR/K9nzDreBO6FQD5Bg9YhhmuQ==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/request@3.3.0':
+    resolution: {integrity: sha512-1YEmjG01x92RWpXjPUo3WlZCdhlveND+HXLGseJ62SEQsiJERXESJZOFX6lYezGzSp5+Gnr32J3MasZMKpI3FA==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/response@3.3.0':
+    resolution: {integrity: sha512-lceFbXjh6NNMAgdBQkHwrgiyeOfXgoXxM0+tVdoPqLEjmoxztWr8m7bE/mlYVtmu0tWphfo6vviYvpOXUGBHOw==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/router@3.0.0':
+    resolution: {integrity: sha512-L+pUl5qvD8gmDY32XpAFmrGpFUX/jpI6Y2Feoos/0rvCyc7Znc7XN9I+1XcXzp6lSqmWwVF8Eoj7JEHPeMsGnQ==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/send@3.0.2':
+    resolution: {integrity: sha512-nPQBRUNUCV607NdcprueC8b41n4306yRGNkLZuxXX9VHwnOHRW1oh7BjrE3WMUuTgpCBl6BYhai3u7Qdjv4O4Q==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/type-is@4.0.1':
+    resolution: {integrity: sha512-ir2n0Xu9Nixi02YPJZd9BbdQIxLSRrFaIN2pGMsiqhvVF7AjaQBFcKnSx3dQ+b6RLuej8GYHk2wz+PPdO0rGiA==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/url@3.0.0':
+    resolution: {integrity: sha512-z/nh6ZacQiPihuah6gsMbcs4EYL9wAzd/VoNAAliwnpMylJayOm46eJtfEn6dlH4L0M6ic89zCI39Qnb5qNx/w==}
+    engines: {node: '>=20.16.0'}
+
+  '@otterhttp/vary@0.2.0':
+    resolution: {integrity: sha512-6aA82LdTy3+WeWOqUaYCLk8FD1Ll1LbSdAzUfFgPZ03JhGQU0lkEqiCf/fKZ0ZQBISlaXl/Qqi12TYiB5hcjUA==}
+    engines: {node: '>=20.16.0'}
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -605,10 +680,6 @@ packages:
     resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
 
-  cookie@0.4.2:
-    resolution: {integrity: sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==}
-    engines: {node: '>= 0.6'}
-
   cookie@0.6.0:
     resolution: {integrity: sha512-U71cyTamuh1CRNCfpGY6to28lxvNwPG4Guz/EVjgf3Jmzv0vlDp1atT9eS5dDjMYHucpHbWns6Lwf3BKz6svdw==}
     engines: {node: '>= 0.6'}
@@ -642,6 +713,10 @@ packages:
 
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
+
+  es-escape-html@0.1.1:
+    resolution: {integrity: sha512-yUx1o+8RsG7UlszmYPtks+dm6Lho2m8lgHMOsLJQsFI0R8XwUJwiMhM1M4E/S8QLeGyf6MkDV/pWgjQ0tdTSyQ==}
+    engines: {node: '>=12.x'}
 
   esbuild@0.21.5:
     resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
@@ -707,6 +782,10 @@ packages:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
     engines: {node: '>=10'}
 
+  header-range-parser@1.1.3:
+    resolution: {integrity: sha512-B9zCFt3jH8g09LR1vHL4pcAn8yMEtlSlOUdQemzHMRKMImNIhhszdeosYFfNW0WXKQtXIlWB+O4owHJKvEJYaA==}
+    engines: {node: '>=12.22.0'}
+
   human-signals@2.1.0:
     resolution: {integrity: sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==}
     engines: {node: '>=10.17.0'}
@@ -718,6 +797,10 @@ packages:
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
+
+  ipaddr.js@2.2.0:
+    resolution: {integrity: sha512-Ag3wB2o37wslZS19hZqorUnrnzSkpOVy+IiiDEiTqNubEYpYuHWIf6K4psgN2ZWKExS4xhVCrRVfb/wfW8fWJA==}
+    engines: {node: '>= 10'}
 
   is-binary-path@2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
@@ -794,6 +877,11 @@ packages:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
     engines: {node: '>=8.6'}
 
+  mime@4.0.4:
+    resolution: {integrity: sha512-v8yqInVjhXyqP6+Kw4fV3ZzeMRqEW6FotRsKXjRS5VMTNIuXsdRoAvklpoRgSqXm6o9VNH4/C0mgedko9DdLsQ==}
+    engines: {node: '>=16'}
+    hasBin: true
+
   mimic-fn@2.1.0:
     resolution: {integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==}
     engines: {node: '>=6'}
@@ -810,6 +898,10 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
+  module-error@1.0.2:
+    resolution: {integrity: sha512-0yuvsqSCv8LbaOKhnsQ/T5JhyFlCYLPXK3U2sgV10zoKQwzs/MyfuQUOZQ1V/6OCOJsK/TRgNVrPuPDqtdMFtA==}
+    engines: {node: '>=10'}
+
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
 
@@ -820,6 +912,10 @@ packages:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  negotiator@0.6.3:
+    resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
+    engines: {node: '>= 0.6'}
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -917,6 +1013,10 @@ packages:
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
+
+  regexparam@2.0.2:
+    resolution: {integrity: sha512-A1PeDEYMrkLrfyOwv2jwihXbo9qxdGD3atBYQA9JJgreAx8/7rC6IUkWOw2NQlOxLp2wL0ifQbh1HuidDfYA6w==}
+    engines: {node: '>=8'}
 
   resolve-from@5.0.0:
     resolution: {integrity: sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw==}
@@ -1371,6 +1471,91 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
+  '@otterhttp/accepts@3.0.0':
+    dependencies:
+      mime: 4.0.4
+      negotiator: 0.6.3
+
+  '@otterhttp/app@3.4.1':
+    dependencies:
+      '@otterhttp/cookie': 3.0.0
+      '@otterhttp/errors': 0.2.1
+      '@otterhttp/proxy-address': 3.0.0
+      '@otterhttp/request': 3.3.0
+      '@otterhttp/response': 3.3.0
+      '@otterhttp/router': 3.0.0
+      '@otterhttp/url': 3.0.0
+      header-range-parser: 1.1.3
+      regexparam: 2.0.2
+
+  '@otterhttp/content-disposition@3.1.0':
+    dependencies:
+      '@otterhttp/parameters': 0.1.0
+
+  '@otterhttp/content-type@0.5.0':
+    dependencies:
+      '@otterhttp/parameters': 0.1.0
+
+  '@otterhttp/cookie@3.0.0': {}
+
+  '@otterhttp/encode-url@3.0.0': {}
+
+  '@otterhttp/errors@0.2.1':
+    dependencies:
+      module-error: 1.0.2
+
+  '@otterhttp/etag@3.0.0': {}
+
+  '@otterhttp/forwarded@3.0.0': {}
+
+  '@otterhttp/parameters@0.1.0': {}
+
+  '@otterhttp/proxy-address@3.0.0':
+    dependencies:
+      '@otterhttp/forwarded': 3.0.0
+      ipaddr.js: 2.2.0
+
+  '@otterhttp/request@3.3.0':
+    dependencies:
+      '@otterhttp/accepts': 3.0.0
+      '@otterhttp/content-type': 0.5.0
+      '@otterhttp/cookie': 3.0.0
+      '@otterhttp/proxy-address': 3.0.0
+      '@otterhttp/router': 3.0.0
+      '@otterhttp/type-is': 4.0.1
+      '@otterhttp/url': 3.0.0
+      header-range-parser: 1.1.3
+
+  '@otterhttp/response@3.3.0':
+    dependencies:
+      '@otterhttp/content-disposition': 3.1.0
+      '@otterhttp/content-type': 0.5.0
+      '@otterhttp/cookie': 3.0.0
+      '@otterhttp/encode-url': 3.0.0
+      '@otterhttp/errors': 0.2.1
+      '@otterhttp/request': 3.3.0
+      '@otterhttp/send': 3.0.2
+      '@otterhttp/vary': 0.2.0
+      es-escape-html: 0.1.1
+      mime: 4.0.4
+
+  '@otterhttp/router@3.0.0': {}
+
+  '@otterhttp/send@3.0.2':
+    dependencies:
+      '@otterhttp/errors': 0.2.1
+      '@otterhttp/etag': 3.0.0
+      mime: 4.0.4
+
+  '@otterhttp/type-is@4.0.1':
+    dependencies:
+      '@otterhttp/content-type': 0.5.0
+      mime: 4.0.4
+
+  '@otterhttp/url@3.0.0': {}
+
+  '@otterhttp/vary@0.2.0': {}
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -1535,8 +1720,6 @@ snapshots:
 
   consola@3.2.3: {}
 
-  cookie@0.4.2: {}
-
   cookie@0.6.0: {}
 
   cross-spawn@7.0.3:
@@ -1560,6 +1743,8 @@ snapshots:
   emoji-regex@8.0.0: {}
 
   emoji-regex@9.2.2: {}
+
+  es-escape-html@0.1.1: {}
 
   esbuild@0.21.5:
     optionalDependencies:
@@ -1694,11 +1879,15 @@ snapshots:
       merge2: 1.4.1
       slash: 3.0.0
 
+  header-range-parser@1.1.3: {}
+
   human-signals@2.1.0: {}
 
   human-signals@5.0.0: {}
 
   ignore@5.3.2: {}
+
+  ipaddr.js@2.2.0: {}
 
   is-binary-path@2.1.0:
     dependencies:
@@ -1761,6 +1950,8 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
+  mime@4.0.4: {}
+
   mimic-fn@2.1.0: {}
 
   mimic-fn@4.0.0: {}
@@ -1771,6 +1962,8 @@ snapshots:
 
   minipass@7.1.2: {}
 
+  module-error@1.0.2: {}
+
   ms@2.1.2: {}
 
   mz@2.7.0:
@@ -1780,6 +1973,8 @@ snapshots:
       thenify-all: 1.6.0
 
   nanoid@3.3.7: {}
+
+  negotiator@0.6.3: {}
 
   normalize-path@3.0.0: {}
 
@@ -1845,6 +2040,8 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+
+  regexparam@2.0.2: {}
 
   resolve-from@5.0.0: {}
 

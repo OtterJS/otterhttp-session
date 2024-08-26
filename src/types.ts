@@ -1,6 +1,6 @@
 import { isDestroyed, isNew, isTouched } from "./symbol"
 
-export type SessionRecord = Record<string, any>
+export type SessionRecord = Record<string, unknown>
 
 export type SessionData<T = SessionRecord> = {
   cookie: Cookie

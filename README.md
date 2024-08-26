@@ -73,7 +73,6 @@ server.listen(8080);
 | encode          | Transforms session ID before setting cookie. It takes the raw session ID and returns the decoded/decrypted session ID.                       | `encodeURIComponent`                     |
 | decode          | Transforms session ID back while getting from cookie. It should return the encoded/encrypted session ID                                      | `decodeURIComponent`                     |
 | touchAfter      | Only touch after an amount of time **(in seconds)** since last access. Disabled by default or if set to `-1`. See [touchAfter](#touchAfter). | `-1` (Disabled)                          |
-| autoCommit      | Automatically commit session. Disable this if you want to manually `session.commit()`                                                        | `true`                                   |
 | cookie.secure   | Specifies the boolean value for the **Secure** `Set-Cookie` attribute.                                                                       | `false`                                  |
 | cookie.httpOnly | Specifies the boolean value for the **httpOnly** `Set-Cookie` attribute.                                                                     | `true`                                   |
 | cookie.path     | Specifies the value for the **Path** `Set-Cookie` attribute.                                                                                 | `/`                                      |
@@ -84,8 +83,6 @@ server.listen(8080);
 ### touchAfter
 
 Touching refers to the extension of session lifetime, both in browser (by modifying `Expires` attribute in [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie) header) and session store (using its respective method) upon access. This prevents the session from being expired after a while.
-
-In `autoCommit` mode (which is enabled by default), for optimization, a session is only touched, not saved, if it is not modified. The value of `touchAfter` allows you to skip touching if the session is still recent, thus, decreasing database load.
 
 ### encode/decode
 
@@ -117,7 +114,6 @@ const currentUser = session.user; // "John Doe"
 ### session.touch()
 
 Manually extends the session expiry by `maxAge`.
-**Note:** You must still call session.commit() if `autoCommit` is `false`.
 
 ```js
 session.touch();
@@ -137,22 +133,15 @@ async function logOut() {
 
 ### session.commit()
 
-Save the session and set necessary headers.
+Save the session to the provided store.
 Returns `Promise<void>`.
-It must be called **before** sending the response headers (`res.writeHead`, `res.send`, `res.end`, etc.).
 
-You **must** call this if `autoCommit` is set to `false`.
+You **must** call this to persist session records. 
+Otherwise, new session records will be created on every request, and no values will be persisted.
 
 ```js
-if (res.headersSent) throw new Error("committing the session won't work!")
 session.hello = "world";
 await session.commit();
-
-// ...
-
-// ensure response headers are sent at some point,
-// or `session.commit()` will have no effect
-res.writeHead()
 ```
 
 ### session.id
@@ -163,14 +152,24 @@ The unique id that associates to the current session.
 
 The session store to use for session middleware (see `options` above).
 
+> [!IMPORTANT]  
+> In production, you will need to implement a scheduled task that clears expired records from your session store 
+> implementation.
+> 
+> How you do this is entirely up to you; if you would like a JavaScript implementation and your application runs within 
+> an asynchronous event loop, the `setInterval` method [(MDN)](https://developer.mozilla.org/en-US/docs/Web/API/setInterval) 
+> may help you.
+
 ### Implementation
 
-A compatible session store must implement
-- `set(sessionId, sessionRecord)`,
-- `get(sessionId)`
-- `destroy(sessionId)`.
+A compatible session store must implement the following members:
+- `set(sessionId, sessionRecord)` should create or update the value of a session record associated with ID `sessionId`
+- `get(sessionId)` should get the value of a session record associated with ID `sessionId`, or return `null`
+- `destroy(sessionId)` should delete a session record associated with ID `sessionId`
 
-Implementation of `touch(sessionId, sessionRecord)` is optional but recommended.
+Following members' implementation is optional but recommended:
+- `touch(sessionId, sessionRecord)` should extend the lifetime of a session record associated with ID `sessionId`, without 
+  affecting its value.
 
 All functions must return `Promise`.
 
@@ -187,7 +186,7 @@ class CustomStore implements SessionStore {}
 ### Using `abstract-level` stores
 
 > [!WARNING]
-> Docs aren't here yet, but they're on their way!
+> This feature hasn't been implemented yet!
 
 ## License
 

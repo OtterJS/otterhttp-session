@@ -34,6 +34,7 @@
   "homepage": "https://github.com/OtterJS/otterhttp-session#readme",
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
+    "@otterhttp/app": "^3.4.1",
     "@types/cookie": "^0.4.1",
     "@types/node": "^22.5.0",
     "light-my-request": "^5.13.0",
@@ -42,7 +43,7 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
-    "cookie": "^0.4.1",
+    "@otterhttp/cookie": "^3.0.0",
     "nanoid": "^3.1.25"
   },
   "engines": {

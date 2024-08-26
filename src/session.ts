@@ -1,12 +1,17 @@
-import type { IncomingMessage, ServerResponse } from "http"
-import c from "cookie"
+import type { Request, Response } from "@otterhttp/app"
+import * as cookie from "@otterhttp/cookie"
 import { nanoid } from "nanoid"
-import MemoryStore from "./memory-store"
-import { isDestroyed, isNew, isTouched } from "./symbol"
-import type { Options, Session, SessionRecord } from "./types"
-import { commitHeader, hash } from "./utils"
 
-export default function session<T extends SessionRecord = SessionRecord>(options: Options = {}) {
+import MemoryStore from "./memory-store"
+import { isDestroyed, isNew, isTouched, lateHeaderAction } from "./symbol"
+import type { Options, Session, SessionRecord } from "./types"
+import { appendSessionCookieHeader } from "./utils"
+
+export default function session<
+  T extends SessionRecord = SessionRecord,
+  Req extends Request & { session?: Session<T> } = Request & { session?: Session<T> },
+  Res extends Response<Req> = Response<Req>,
+>(options: Options = {}) {
   type TypedSession = Session<T>
 
   const name = options.name || "sid"
@@ -15,26 +20,21 @@ export default function session<T extends SessionRecord = SessionRecord>(options
   const encode = options.encode
   const decode = options.decode
   const touchAfter = options.touchAfter ?? -1
-  const autoCommit = options.autoCommit ?? true
   const cookieOpts = options.cookie || {}
 
-  function decorateSession(
-    req: IncomingMessage & { session?: TypedSession },
-    res: ServerResponse,
-    session: TypedSession,
-    id: string,
-    _now: number,
-  ) {
+  function decorateSession(req: Req, res: Res, session: TypedSession, id: string, _now: number) {
     Object.defineProperties(session, {
       commit: {
         value: async function commit(this: TypedSession) {
-          commitHeader(res, name, this, encode)
           await store.set(this.id, this)
         },
       },
       touch: {
-        value: async function commit(this: TypedSession) {
-          this.cookie.expires = new Date(_now + this.cookie.maxAge! * 1000)
+        value: async function touch(this: TypedSession) {
+          if (this.cookie.maxAge != null) {
+            this.cookie.expires = new Date(_now + this.cookie.maxAge * 1000)
+          }
+          await store.touch?.(this.id, this)
           this[isTouched] = true
         },
       },
@@ -43,23 +43,19 @@ export default function session<T extends SessionRecord = SessionRecord>(options
           this[isDestroyed] = true
           this.cookie.expires = new Date(1)
           await store.destroy(this.id)
-          if (!autoCommit) commitHeader(res, name, this, encode)
-          delete req.session
+          req.session = undefined
         },
       },
       id: { value: id },
     })
   }
 
-  return async function sessionHandle(
-    req: IncomingMessage & { session?: TypedSession },
-    res: ServerResponse,
-  ): Promise<TypedSession> {
-    if (req.session) return req.session
+  return async function sessionHandle(req: Req, res: Res): Promise<TypedSession> {
+    if (req.session != null) return req.session
 
     const _now = Date.now()
 
-    let sessionId = req.headers?.cookie ? c.parse(req.headers.cookie)[name] : null
+    let sessionId = req.headers?.cookie ? cookie.parse(req.headers.cookie)[name] : null
     if (sessionId && decode) {
       sessionId = decode(sessionId)
     }
@@ -70,18 +66,19 @@ export default function session<T extends SessionRecord = SessionRecord>(options
     if (_session) {
       session = _session as TypedSession
       // Some store return cookie.expires as string, convert it to Date
-      if (typeof session.cookie.expires === "string") {
-        session.cookie.expires = new Date(session.cookie.expires)
+      const expires = session.cookie.expires as string | Date | undefined
+      if (typeof expires === "string") {
+        session.cookie.expires = new Date(expires)
       }
 
       // Add session methods
       decorateSession(req, res, session, sessionId as string, _now)
 
-      // Extends the expiry of the session if options.touchAfter is sastified
+      // Extends the expiry of the session if options.touchAfter is satisfied
       if (touchAfter >= 0 && session.cookie.expires) {
         const lastTouchedTime = session.cookie.expires.getTime() - session.cookie.maxAge * 1000
         if (_now - lastTouchedTime >= touchAfter * 1000) {
-          session.touch()
+          await session.touch()
         }
       }
     } else {
@@ -107,42 +104,10 @@ export default function session<T extends SessionRecord = SessionRecord>(options
 
     req.session = session
 
-    // prevSessStr is used to compare the session later
-    // in autoCommit -- that is, we only save the
-    // session if it has changed.
-    let prevHash: string | undefined
-    if (autoCommit) {
-      prevHash = hash(session)
-    }
-
-    // autocommit: We commit the header and save the session automatically
-    // by "proxying" res.writeHead and res.end methods. After committing, we
-    // call the original res.writeHead and res.end.
-    if (autoCommit) {
-      const _writeHead = res.writeHead
-      res.writeHead = function resWriteHeadProxy(...args: any) {
-        // Commit the header if either:
-        // - session is new and has been populated
-        // - session is flagged to commit header (touched or destroyed)
-        if ((session[isNew] && Object.keys(session).length > 1) || session[isTouched] || session[isDestroyed]) {
-          commitHeader(res, name, session, encode)
-        }
-        return _writeHead.apply(this, args)
-      }
-      const _end = res.end
-      res.end = function resEndProxy(...args: any) {
-        const done = () => _end.apply(this, args)
-        if (session[isDestroyed]) {
-          done()
-        } else if (hash(session) !== prevHash) {
-          store.set(session.id, session).finally(done)
-        } else if (session[isTouched] && store.touch) {
-          store.touch(session.id, session).finally(done)
-        } else {
-          done()
-        }
-      }
-    }
+    res.registerLateHeaderAction(lateHeaderAction, (res: Res) => {
+      if (!(session[isNew] && Object.keys(session).length > 1) && !session[isTouched] && !session[isDestroyed]) return
+      appendSessionCookieHeader(res, name, session, encode)
+    })
 
     return session
   }
