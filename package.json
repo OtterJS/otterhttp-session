@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "otterhttp-session",
+  "name": "@otterhttp/session",
   "description": "Simple promise-based session utility for otterhttp",
   "keywords": [
     "otterhttp",
