@@ -195,6 +195,6 @@ class CustomStore implements SessionStore {}
 [npm-url]: https://npmjs.com/package/@otterhttp/session
 [npm-img]: https://img.shields.io/npm/dt/@otterhttp/session?style=for-the-badge&color=blueviolet
 [github-actions]: https://github.com/OtterJS/otterhttp-session/actions
-[gh-actions-img]: https://img.shields.io/github/actions/workflow/status/OtterJS/otterhttp-session/ci.yml?branch=main&style=for-the-badge&color=blueviolet&label=&logo=github
+[gh-actions-img]: https://img.shields.io/github/actions/workflow/status/OtterJS/otterhttp-session/main.yml?branch=main&style=for-the-badge&color=blueviolet&label=&logo=github
 [cov-url]: https://coveralls.io/github/OtterJS/otterhttp-session
 [cov-img]: https://img.shields.io/coveralls/github/OtterJS/otterhttp-session?style=for-the-badge&color=blueviolet
