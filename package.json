@@ -2,7 +2,11 @@
   "type": "module",
   "name": "otterhttp-session",
   "description": "Simple promise-based session utility for otterhttp",
-  "keywords": ["otterhttp", "session", "promise"],
+  "keywords": [
+    "otterhttp",
+    "session",
+    "promise"
+  ],
   "main": "./lib/index.js",
   "exports": {
     ".": {
@@ -11,7 +15,9 @@
     }
   },
   "types": "lib/session.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
@@ -37,6 +43,7 @@
     "@otterhttp/app": "^3.4.1",
     "@types/cookie": "^0.4.1",
     "@types/node": "^22.5.0",
+    "@vitest/coverage-istanbul": "^2.0.5",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
