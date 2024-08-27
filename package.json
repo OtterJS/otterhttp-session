@@ -36,7 +36,7 @@
   "homepage": "https://github.com/OtterJS/otterhttp-session#readme",
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
-    "@otterhttp/app": "^3.4.1",
+    "@otterhttp/app": "^3.4.2",
     "@types/cookie": "^0.4.1",
     "@types/node": "^22.5.0",
     "@vitest/coverage-istanbul": "^2.0.5",
