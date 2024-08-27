@@ -8,7 +8,7 @@ export type SessionData<T = SessionRecord> = {
 
 export type Session<T extends SessionRecord = SessionRecord> = {
   id: string
-  touch(): void
+  touch(): Promise<void>
   commit(): Promise<void>
   destroy(): Promise<void>
   [isNew]?: boolean
