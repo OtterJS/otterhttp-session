@@ -1,5 +1,4 @@
 import type { Request, Response } from "@otterhttp/app"
-import * as cookie from "@otterhttp/cookie"
 import { nanoid } from "nanoid"
 
 import MemoryStore from "./memory-store"
@@ -18,7 +17,6 @@ export default function session<
   const store = options.store || new MemoryStore()
   const genId = options.genid || nanoid
   const encode = options.encode
-  const decode = options.decode
   const touchAfter = options.touchAfter ?? -1
   const cookieOpts = options.cookie || {}
 
@@ -55,10 +53,7 @@ export default function session<
 
     const _now = Date.now()
 
-    let sessionId = req.headers?.cookie ? cookie.parse(req.headers.cookie)[name] : null
-    if (sessionId && decode) {
-      sessionId = decode(sessionId)
-    }
+    let sessionId = req.cookies[name]?.value
 
     const _session = sessionId ? await store.get(sessionId) : null
 
