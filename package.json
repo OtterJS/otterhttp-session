@@ -13,7 +13,7 @@
     }
   },
   "types": "./dist/session.d.ts",
-  "files": ["dist"],
+  "files": ["dist", "licenses"],
   "sideEffects": false,
   "scripts": {
     "build": "tsup",
