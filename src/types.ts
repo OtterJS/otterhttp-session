@@ -53,8 +53,8 @@ export interface Options {
         /**
          * `otterhttp` cookie 'unsign' function, will be used to unsign session cookies.
          *
-         * You must ensure that encoded session cookies are not matched by your `otterhttp` `App`'s configured
-         * `signedCookieMatcher`. Otherwise, `otterhttp` will attempt to decode session cookies using the `App`'s configured
+         * You must ensure that signed session cookies are not matched by your `otterhttp` `App`'s configured
+         * `signedCookieMatcher`. Otherwise, `otterhttp` will attempt to unsign session cookies using the `App`'s configured
          * `cookieUnsigner` instead, and unsigning with this function will not be attempted.
          * @default undefined
          */
