@@ -16,9 +16,8 @@ export default function session<
   const name = options.name || "sid"
   const store = options.store || new MemoryStore()
   const genId = options.genid || nanoid
-  const encode = options.encode
   const touchAfter = options.touchAfter ?? -1
-  const cookieOpts = options.cookie || {}
+  const { unsign, ...cookieOpts } = options.cookie ?? {}
 
   function decorateSession(req: Req, res: Res, session: TypedSession, id: string, _now: number) {
     Object.defineProperties(session, {
@@ -53,8 +52,13 @@ export default function session<
 
     const _now = Date.now()
 
-    let sessionId = req.cookies[name]?.value
+    const sessionCookie = req.cookies[name]
+    if (unsign != null && sessionCookie != null && !sessionCookie.signed) sessionCookie.unsign(unsign)
 
+    let sessionId: string | null = null
+    try {
+      sessionId = sessionCookie?.value ?? null
+    } catch (err) {}
     const _session = sessionId ? await store.get(sessionId) : null
 
     let session: TypedSession
@@ -101,7 +105,7 @@ export default function session<
 
     res.registerLateHeaderAction(lateHeaderAction, (res: Res) => {
       if (!(session[isNew] && Object.keys(session).length > 1) && !session[isTouched] && !session[isDestroyed]) return
-      appendSessionCookieHeader(res, name, session, encode)
+      appendSessionCookieHeader(res, name, session, cookieOpts)
     })
 
     return session

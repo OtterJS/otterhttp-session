@@ -2,14 +2,11 @@ import type { Request, Response } from "@otterhttp/app"
 
 import type { Options, Session } from "./types"
 
-export function appendSessionCookieHeader<
-  Req extends Request = Request,
-  Res extends Response<Req> = Response<Req>,
->(
+export function appendSessionCookieHeader<Req extends Request = Request, Res extends Response<Req> = Response<Req>>(
   res: Res,
   name: string,
   { cookie, id }: Pick<Session, "cookie" | "id">,
-  encodeFn?: Options["encode"],
+  { encode, sign }: Pick<Exclude<Options["cookie"], undefined>, "encode" | "sign">,
 ) {
   if (res.headersSent) return
   res.cookie(name, id, {
@@ -19,6 +16,7 @@ export function appendSessionCookieHeader<
     domain: cookie.domain,
     sameSite: cookie.sameSite,
     secure: cookie.secure,
-    encode: encodeFn,
+    encode,
+    sign,
   })
 }

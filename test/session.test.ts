@@ -63,7 +63,10 @@ describe("session()", () => {
     const cookie = {
       httpOnly: false,
     }
-    const sess = await session({ cookie })({} as Request, { registerLateHeaderAction: vi.fn() } as unknown as Response)
+    const sess = await session({ cookie })(
+      { cookies: {} } as Request,
+      { registerLateHeaderAction: vi.fn() } as unknown as Response,
+    )
 
     expect(sess.cookie.httpOnly).toBeFalsy()
   })
@@ -282,16 +285,16 @@ describe("session()", () => {
         .end()
     })
   })
-  test("allow encode and decode sid", async () => {
-    const decode = (key: string) => {
+  test("allow sign and unsign sid", async () => {
+    const unsign = (key: string) => {
       if (key.startsWith("sig.")) return key.substring(4)
-      return null
+      throw new Error()
     }
-    const encode = (key: string) => {
+    const sign = (key: string) => {
       return `sig.${key}`
     }
     const store = new MemoryStore()
-    const sessionFn = session({ store, encode, decode })
+    const sessionFn = session({ store, cookie: { sign, unsign } })
     let sid: string | undefined
     const app = new App<Request, Response>()
     app.use("/", async (req: Request, res: Response, next) => {
@@ -317,10 +320,10 @@ describe("session()", () => {
 
     const res1 = await fetch("/first")
     expect(sid).toBeDefined()
-    expect(res1.headers.getSetCookie()).toContain(`sid=${encode(sid as string)}; Path=/; HttpOnly`)
+    expect(res1.headers.getSetCookie()).toContain(`sid=${sign(sid as string)}; Path=/; HttpOnly`)
     expect(store.store.has(sid as string)).toBe(true)
 
-    const res2 = await fetch("/second", { headers: { cookie: `sid=${encode(sid as string)}` } })
+    const res2 = await fetch("/second", { headers: { cookie: `sid=${sign(sid as string)}` } })
     await expect(res2.text()).resolves.toEqual("bar")
 
     const res3 = await fetch("/second", { headers: { cookie: `sid=${sid}` } })
