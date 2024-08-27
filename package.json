@@ -3,14 +3,16 @@
   "name": "@otterhttp/session",
   "description": "Simple promise-based session utility for otterhttp",
   "keywords": ["otterhttp", "session", "promise"],
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./lib/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     }
   },
-  "types": "lib/session.d.ts",
+  "types": "./dist/session.d.ts",
   "files": ["dist"],
   "sideEffects": false,
   "scripts": {
