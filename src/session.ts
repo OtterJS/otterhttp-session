@@ -13,11 +13,11 @@ export default function session<
 >(options: Options = {}) {
   type TypedSession = Session<T>
 
-  const name = options.name || "sid"
   const store = options.store || new MemoryStore()
   const genId = options.genid || nanoid
   const touchAfter = options.touchAfter ?? -1
-  const { unsign, ...cookieOpts } = options.cookie ?? {}
+  const { name: maybeName, unsign, ...cookieOpts } = options.cookie ?? {}
+  const name = maybeName ?? "sid"
 
   function decorateSession(req: Req, res: Res, session: TypedSession, id: string, _now: number) {
     Object.defineProperties(session, {

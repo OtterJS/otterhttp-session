@@ -38,12 +38,13 @@ export interface SessionStore {
 }
 
 export interface Options {
-  name?: string | undefined
   store?: SessionStore | undefined
   genid?: (() => string) | undefined
   touchAfter?: number | undefined
   cookie?:
     | (Partial<Exclude<Cookie, "expires">> & {
+        name?: string | undefined
+
         /**
          * `otterhttp` cookie `sign` function, will be passed to `res.cookie`.
          * @default undefined
