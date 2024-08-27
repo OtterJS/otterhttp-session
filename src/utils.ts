@@ -10,13 +10,14 @@ export function appendSessionCookieHeader(
   encodeFn?: Options["encode"],
 ) {
   if (res.headersSent) return
-  const cookieStr = c.serialize(name, encodeFn ? encodeFn(id) : id, {
+  const cookieStr = c.serialize(name, id, {
     path: cookie.path,
     httpOnly: cookie.httpOnly,
     expires: cookie.expires,
     domain: cookie.domain,
     sameSite: cookie.sameSite,
     secure: cookie.secure,
+    encode: encodeFn,
   })
   res.appendHeader("set-cookie", cookieStr)
 }
