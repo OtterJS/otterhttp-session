@@ -112,4 +112,4 @@ export default function session<
   }
 }
 
-export type { Options, SessionStore } from "./types"
+export type { Options, Session, SessionData, SessionStore } from "./types"
