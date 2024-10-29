@@ -87,7 +87,7 @@ export default function session<
         cookie: {
           path: cookieOpts.path || "/",
           httpOnly: cookieOpts.httpOnly ?? true,
-          domain: cookieOpts.domain || undefined,
+          domain: cookieOpts.domain || null,
           sameSite: cookieOpts.sameSite,
           secure: cookieOpts.secure || false,
         },
