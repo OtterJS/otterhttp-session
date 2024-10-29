@@ -5,7 +5,6 @@ type FetchInit = Parameters<typeof fetch>[1]
 export function makeFetch<
   Req extends typeof IncomingMessage = typeof IncomingMessage,
   Res extends typeof ServerResponse<InstanceType<Req>> = typeof ServerResponse<InstanceType<Req>>,
-  // @ts-expect-error
 >(server: Server<Req, Res>) {
   const address = server.address()
   if (address == null) throw new Error("Somehow, the server is not listening")
