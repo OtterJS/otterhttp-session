@@ -33,11 +33,11 @@ type Cookie = {
 )
 
 type SetCookieOptions = SerializeOptions & {
-    /**
-     * `otterhttp` cookie `sign` function, will be passed to `res.cookie`.
-     * @default undefined
-     */
-    sign?: ((value: string) => string) | null | undefined
+  /**
+   * `otterhttp` cookie `sign` function, will be passed to `res.cookie`.
+   * @default undefined
+   */
+  sign?: ((value: string) => string) | null | undefined
 }
 
 export interface SessionStore {
