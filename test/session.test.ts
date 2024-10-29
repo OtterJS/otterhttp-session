@@ -13,10 +13,10 @@ type Request = OtterRequest & { session?: Session<Record<string, unknown>> | und
 type Response<Req extends Request = Request> = OtterResponse<Req>
 
 const defaultCookie = {
-  domain: undefined,
+  domain: null,
   httpOnly: true,
   path: "/",
-  sameSite: undefined,
+  sameSite: null,
   secure: false,
 }
 
