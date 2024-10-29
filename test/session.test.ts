@@ -120,7 +120,7 @@ describe("session()", () => {
       destroy: vi.fn(),
     }
     let id: string | undefined
-    let expires: Date | undefined
+    let expires: Date | null | undefined
     const app = new App<Request, Response>()
     app.use(async (req: Request, res: Response) => {
       await session({ store, cookie: { maxAge: 10 } })(req, res)
@@ -200,7 +200,7 @@ describe("session()", () => {
     await store.set("foo", {
       cookie: { ...defaultCookie, expires, maxAge: 5 },
     })
-    let newExpires: Date | undefined
+    let newExpires: Date | null | undefined
     const app = new App<Request, Response>()
     app.use(async (req: Request, res: Response) => {
       await session({ store, touchAfter: 1 })(req, res)
@@ -227,7 +227,7 @@ describe("session()", () => {
     await store.set("foo", {
       cookie: { ...defaultCookie, expires, maxAge: 5 },
     })
-    let newExpires: Date | undefined
+    let newExpires: Date | null | undefined
     const app = new App<Request, Response>()
     app.use(async (req: Request, res: Response) => {
       await session({ store, touchAfter: 10 })(req, res)

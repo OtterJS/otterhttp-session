@@ -21,11 +21,11 @@ export type Session<T extends SessionRecord = SessionRecord> = {
 type Cookie = {
   httpOnly: boolean
   path: string
-  domain?: string | undefined
+  domain?: string | undefined | null
   secure: boolean
-  sameSite?: boolean | "lax" | "strict" | "none"
+  sameSite?: boolean | "lax" | "strict" | "none" | undefined | null
 } & (
-  | { maxAge?: undefined; expires?: undefined }
+  | { maxAge?: undefined | null; expires?: undefined | null }
   | {
       maxAge: number
       expires: Date
